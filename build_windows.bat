@@ -16,10 +16,25 @@ echo Installing dependencies...
 pip install -r requirements.txt -q
 pip install pyinstaller -q
 
-REM Build
+REM Build with PyInstaller
 echo Building with PyInstaller...
 pyinstaller pypdftools.spec
 
+REM Create installer with Inno Setup (if available)
+where iscc >nul 2>&1
+if %ERRORLEVEL% EQU 0 (
+    echo.
+    echo Creating installer with Inno Setup...
+    iscc installer.iss
+    echo.
+    echo Installer created: output\PyPDFTools_Setup.exe
+) else (
+    echo.
+    echo Inno Setup not found. To create installer:
+    echo   1. Install Inno Setup from https://jrsoftware.org/isinfo.php
+    echo   2. Run: iscc installer.iss
+)
+
 echo.
-echo Done! Output: dist\PyPDFTools\PyPDFTools.exe
+echo Done! Portable: dist\PyPDFTools\PyPDFTools.exe
 pause
